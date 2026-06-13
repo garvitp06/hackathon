@@ -1,10 +1,10 @@
 # Your Project Name
 
-- **Problem Statement Number** - 
-- **Problem Statement Title** - *(Must exactly match one of the 11 Samsung EnnovateX AX Hackathon Problem Statements)*
-- **Team name** - *(Same as Phase 1 Team name)*
-- **Team members (Names)** - *Member 1 Name*, *Member 2 Name*
-- **Institute/College Name** - *Name*, *Campus Name & Address (In case the institute has multiple campuses)*
+- **Problem Statement Number** - 11
+- **Problem Statement Title** - *Real-Time Multi-User Smart Assistant for Dynamic and Noisy Smart Environments*
+- **Team name** - *Gagnantes*
+- **Team members (Names)** - *Garvit Pareek*, *Alishri Poddar*
+- **Institute/College Name** - *SRM Institute of Technology*, *Campus Name & Address (In case the institute has multiple campuses)*
 - **Final Presentation Google Drive Link** - *Upload the PDF presentation for your final submission on Google Drive (It should be openly accessible and not behind any login wall)*
 - **Full Submission Demo Video Link** - *(Upload the Demo video on Youtube as a public or unlisted video and share the link. Google Drive uploads for video is not allowed.)*
 - **Setup & Result Reproducibility Video Link** - *(Upload the Demo video on Youtube as a public or unlisted video and share the link. Google Drive uploads for video is not allowed.)*
