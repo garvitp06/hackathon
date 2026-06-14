@@ -1,4 +1,4 @@
-# Your Project Name
+# AuraSync
 
 - **Problem Statement Number** - 11
 - **Problem Statement Title** - *Real-Time Multi-User Smart Assistant for Dynamic and Noisy Smart Environments*
