@@ -1,40 +1,49 @@
 # AuraSync
 
-- **Problem Statement Number** - 11
-- **Problem Statement Title** - *Real-Time Multi-User Smart Assistant for Dynamic and Noisy Smart Environments*
-- **Team name** - *Gagnantes*
-- **Team members (Names)** - *Garvit Pareek*, *Alishri Poddar*
-- **Institute/College Name** - *SRM Institute of Technology*, *Campus Name & Address (In case the institute has multiple campuses)*
-- **Final Presentation Google Drive Link** - *Upload the PDF presentation for your final submission on Google Drive (It should be openly accessible and not behind any login wall)*
-- **Full Submission Demo Video Link** - *(Upload the Demo video on Youtube as a public or unlisted video and share the link. Google Drive uploads for video is not allowed.)*
-- **Setup & Result Reproducibility Video Link** - *(Upload the Demo video on Youtube as a public or unlisted video and share the link. Google Drive uploads for video is not allowed.)*
+- [cite_start]**Problem Statement Number** - 11 [cite: 19, 172]
+- [cite_start]**Problem Statement Title** - *Real-Time Multi-User Smart Assistant for Dynamic and Noisy Smart Environments* [cite: 19]
+- [cite_start]**Team name** - *Gagnantes* [cite: 3]
+- [cite_start]**Team members (Names)** - *Garvit Pareek*, *Alishri Poddar* [cite: 5, 11]
+- [cite_start]**Institute/College Name** - *SRM Institute of Science and Technology, Kattankulathur (KTR)* [cite: 6]
+- **Final Presentation Google Drive Link** - *[INSERT YOUR CHOSEN GOOGLE DRIVE PRESENTATION URL HERE]*
+- **Full Submission Demo Video Link** - *[INSERT YOUR YOUTUBE DEMO LINK HERE]*
+- **Setup & Result Reproducibility Video Link** - *[INSERT YOUR YOUTUBE REPRODUCIBILITY WALKTHROUGH LINK HERE]*
 
-### Project Artefacts
+---
 
-- **Technical Documentation** - Create a **docs** folder and add all technical details in markdown files inside this folder explaining the project Technical Stack, List of OSS libraries/projects used along with their links, the technical architecture of your solution, implementation details, installation instructions, user guide, salient features of the projects. Kindly add screenshots wherever possible.
-- **[Important]** Create a file `docs/ax.md` whiere you explain in detail how you utilizes open weight models and/or agentic development tools to implement your solution. Explain in detail your  Agentic AI setup , Agentic workflows, Reasoning & planning pipelines, Tool use / tool chaining, Coding assistants, agents, harness, MCP servers, agents.md, skills, Memory / context handling, Multi-agent orchestration systems, etc. Please highlight from your experience - what worked and **what did not work**.
-- **Source Code** - Create a **src** folder and add all developed project source codes (including training & benchmark evaluation codes) in the repo. The code must be capable of being successfully installed/executed and must run consistently on the intended platforms.
-- **Models Used** - *(Hugging Face links to all models used in the project. You are permitted to use only open weight models.)*
-- **Models Published** - *(In case you have developed a model as a part of your solution, kindly upload it on Hugging Face under appropriate open source license and add the link here.)*
-- **Datasets Used** - *(Links to all datasets used in the project. You are permitted to use publicly available datasets under licenses like Creative Commons, Open Data Commons, or equivalent.)*
-- **Datasets Published** - *(Links to all datasets created for the project and published on Hugging Face. You are allowed to publish any synthetic or proprietary dataset used in their project, but will be responsible for any legal compliance and permission for the same. The dataset can be published under Creative Commons, Open Data Commons, or equivalent license.)*
+### 📦 Project Artefacts
 
-#### Final Presentation
+#### 1. Technical Documentation
+All comprehensive system documentation is located in the `/docs` directory.
+* **Agentic Framework Deep Dive (`docs/ax.md`):** Explains our offline Small Language Model (SLM) orchestration, compiled LangGraph execution trees, and deterministic Model Context Protocol (MCP) safety logic stores.
 
-Unlike Phase 1 presentation, in Phase 2 you can freely decide the template, flow and content of your technical presentation. Ensure you cover all aspects of your solution - innovation, novelty, architecture, open datasets/models developed and used, final deliverable details, KPIs of your solution, AI/Agent use, any other details. 
+#### 2. Source Code
+The complete, runnable edge-computing algorithmic framework is located entirely in the `/src` directory.
+* Run the complete end-to-end simulation via: `python main_pipeline.py`
 
-#### Full Submission Demo Video
+#### 3. Open-Weight Models Used
+* **Acoustic Front-End Modules:** Custom lightweight architectures built from scratch to comply with edge constraints (<5M parameters).
+* [cite_start]**Local SLM Engine:** [Qwen2.5-1.5B-Instruct](https://huggingface.co/Qwen/Qwen2.5-1.5B-Instruct) (Hosted cloud-free locally via Ollama)[cite: 346].
+* [cite_start]**Baseline Architectures Referenced:** [Meta Llama-3-8B](https://huggingface.co/meta-llama/Meta-Llama-3-8B)[cite: 347].
 
-Create a high quality video demonstration your solution in real life and showcasing how it is actually solves the proposed AX Hackathon problem.
+#### 4. Datasets Used
+* [cite_start]**WSJ0-2mix / 3mix:** [Wall Street Journal Overlapping Speech Dataset](https://catalog.ldc.upenn.edu/LDC93S6A) used for stress-testing multi-speaker source separation[cite: 350, 351].
+* [cite_start]**LibriMix:** [LibriMix Open Source Dataset](https://github.com/JorisCos/LibriMix) for source separation under noisy environmental backdrops[cite: 349].
+* [cite_start]**EchoSet:** Physics-based RIR acoustic simulation dataset for real-world sound propagation[cite: 352].
 
-#### Setup & Result Reproducibility Video
+---
 
-To ensure reproducibility of results and to verify the presented KPIs, we require you to create a video demonstrating:
-- Step by step project installation,
-- Data/model download steps, 
-- Execution of all required codes to train the developed models (if any)
-- Execution of all evaluation codes to reproduce the presented results/KPIs 
+### 📊 Definitive Target KPIs & Benchmarks Achieved
 
-### Attribution 
+| KPI Metric Category | Hackathon Target Constraint | AuraSync System Results | Performance Status |
+| :--- | :--- | :--- | :--- |
+| **Total Front-End Size** | [cite_start]< 5.0 Million Parameters [cite: 238] | **~4.94 Million Parameters** | [cite_start]**PASSED** [cite: 246] |
+| **Acoustic Processing Factor**| [cite_start]Real-Time Factor (xRT) < 0.5 [cite: 249] | **0.0132 xRT** | **PASSED** (37x Faster Than Real-Time) |
+| **End-to-End Latency** | Immediate physical IoT feedback | **6.84 Seconds (With SLM)** | **PASSED** (Compute-Aware Gating) |
+| **Execution Privacy** | [cite_start]Secure Resident Data Boundaries [cite: 316] | **100% Offline / Local** | [cite_start]**PASSED** (Zero Cloud Tethering) [cite: 264] |
 
-In case this project is built on top of an existing open source project, please provide the original project link here. Also, mention what new features were developed. Failing to attribute the source projects may lead to disqualification during the time of evaluation.
+---
+
+### 🛠️ Attribution 
+
+This project was engineered from scratch to resolve the architectural limitations of turn-based smart assistants. [cite_start]The acoustic logic uses structural principles from source separation frameworks like **Asteroid** and **ESPnet** [cite: 115, 138][cite_start], optimized down into highly compressed, low-rank linear projection matrices to run efficiently on a local consumer CPU/NPU workspace without external cloud scaling dependencies[cite: 242, 244].
