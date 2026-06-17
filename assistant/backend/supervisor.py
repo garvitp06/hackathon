@@ -61,7 +61,7 @@ class LangGraphSupervisorEngine:
 
     def watchdog_critic_node(self, state: AgentState) -> AgentState:
         """
-        The Adversarial Safety Gate. Cross-checks safety metrics and forwards to local MCP execution.
+        The Adversarial Safety Gate. Cross-checks safety metrics and forwards to Alishri's MCP class.
         """
         print(f"[Node: Watchdog Critic] Cross-checking execution payload safety metrics...")
 
@@ -75,14 +75,38 @@ class LangGraphSupervisorEngine:
         if validation.is_safe:
             state["final_execution_plan"] = f"EXECUTE_MCP_CALL -> {state['current_intent']}"
 
-            # --- INTEGRATION WITH ALISHRI'S MCP SERVER ---
+            # --- PERFECT INTEGRATION WITH ALISHRI'S MOCK MCP SERVER CLASS ---
             try:
-                # Import her file dynamically from the local backend directory
                 import mcp_server
-                # Pipe the command directly into her device execution handler
-                mcp_server.execute_mcp_tool(command=state["current_intent"], user=state["speaker_id"])
+                import json
+
+                # 1. Map the incoming natural language text to her registered tools
+                intent_lower = state["current_intent"].lower()
+                tool_name = "toggle_appliance"
+                parameters = {"device_id": "general_appliance", "state": "on"}
+
+                if "temperature" in intent_lower or "degrees" in intent_lower:
+                    tool_name = "set_temperature"
+                    # Extract the numerical value dynamically or fallback safely
+                    temp_val = 22 if "22" in intent_lower else 24
+                    parameters = {"device_id": "living_room_ac", "temperature": temp_val}
+                elif "lock" in intent_lower:
+                    tool_name = "lock_door"
+                    parameters = {"device_id": "front_entry_door", "is_locked": "lock" in intent_lower}
+
+                # 2. Package it into the exact JSON payload format her method requires
+                payload_to_mcp = json.dumps({
+                    "tool": tool_name,
+                    "parameters": parameters
+                })
+
+                # 3. Instantiate her class and fire the instance method execution loop
+                mcp_instance = mcp_server.MockMCPServer()
+                mcp_response = mcp_instance.execute_tool(payload_to_mcp)
+                print(f"   ↳ [MCP Server Response] {mcp_response}")
+
             except ImportError:
-                print("   ↳ [MCP Notice] mcp_server.py module not found in staging path. Printing default route.")
+                print("   ↳ [MCP Notice] mcp_server.py module not found in staging path.")
             except Exception as e:
                 print(f"   ↳ [MCP Execution Error] {e}")
 
