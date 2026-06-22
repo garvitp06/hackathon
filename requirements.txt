@@ -1,7 +1,0 @@
-torch
-torchaudio
-asteroid
-vosk
-jiwer
-torchmetrics
-numpy
