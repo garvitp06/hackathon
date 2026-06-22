@@ -1,31 +1,32 @@
-# Agentic AI Setup & Workflows Documentation (Track 2)
+# Agentic AI & LLM Assisted Development Log (`docs/ax.md`)
 
-This document provides a comprehensive breakdown of the localized agentic orchestration engine developed for the AuraSync platform, explaining our design choices, tool-use routing pipelines, and optimization milestones.
-
----
-
-## 🧠 Agentic AI Architecture
-
-The system utilizes a compiled, state-directed orchestration loop to process text data streaming from the edge acoustic frontend.
-
-### 1. Compiled LangGraph State Workflow
-Instead of utilizing standard, brittle python conditional loops, the orchestration layer uses the `langgraph` framework to compile a resilient state routing tree. This configuration links our active nodes explicitly:
-`SupervisorRouter Node` ➔ `IntentPlanner Node` ➔ `WatchdogCritic Node` ➔ `END`
-
-### 2. Cloud-Free Local SLM Core
-To guarantee absolute data sovereignty and zero external round-trip network latency, all semantic evaluation passes through a local instance of the **Qwen2.5-1.5B-Instruct** small language model running offline via an on-device Ollama server endpoint.
-
-### 3. Adversarial Safety Watchdog
-The system does not rely on probabilistic language model predictions to handle dangerous smart home device execution states. Instead, a deterministic **Watchdog Critic Agent** cross-checks every single planned action string against prior conversational state history variables before any tool-chain payload can fire.
+This document details how our team leveraged advanced LLM coding assistants, generative engineering frameworks, and automated planning setups to rapidly build, debug, and optimize the AuraSync Edge Architecture for the Samsung EnnovateX AX Hackathon.
 
 ---
 
-## 📊 Developer Experience Insights: What Worked vs. What Did Not
+## 🤖 Agentic AI Workspace Configuration
 
-### ❌ What Did NOT Work (The Sequential Latency Trap)
-* **The Problem:** In our initial design phase, the text output from every single 160ms acoustic frame chunk was fed directly into the language model for safety clearance. 
-* **The Consequence:** Because local small language model text inference on a consumer CPU requires roughly 1 to 2 seconds per generation loop, hitting the model sequentially on every split-second audio chunk created a severe latency bottleneck, causing the system execution runtime to spike past **70 seconds ($xRT = 8.33$)**. This severely breached our hackathon runtime constraints.
+During development, we established an iterative, agent-assisted feedback loop combining specialized software development LLMs with manual validation to navigate complex signal processing and hardware constraints. 
 
-###  What WORKED (Compute-Aware Token Compression Gating)
-* **The Solution:** We designed and deployed a **Compute-Aware Edge Ingest Gate**. The fast acoustic front-end (operating at a blazing **0.0132 xRT**) buffers text silently. The local language model agent is **only** invoked when a significant conversational shift is detected (such as a text context change, a new resident speaker profile signature, or an overlapping multi-user voice collision).
-* **The Result:** This optimization eliminated redundant generation cycles, dropping the aggregate end-to-end execution duration from **70.6 seconds down to a crisp 6.84 seconds**—compressing our processing timeline by over **90%**!
+### 🔧 Workflows & Implementation Mechanics
+
+1. **Architectural Ideation & Blueprinting**: We fed our initial raw hardware resource constraints ($<5\text{M}$ parameter limits, strict offline targets) through structural planning prompts. This helped us systematically eliminate heavy transformer models and isolate compliant open-weight acoustic candidates.
+2. **PyTorch Quantization & Shape Debugging**: We utilized LLM assistants to generate clean tensor tracking shapes and troubleshoot compilation warnings when setting up the automated `torchaudio` dynamic resampling blocks.
+3. **Multi-Threaded Path Engineering**: To bypass the limitations of the Python Global Interpreter Lock (GIL), coding assistants were used to generate asynchronous execution schemas, binding parallel audio buffers cleanly to separate Kaldi C++ worker paths.
+4. **Model Context Protocol (MCP) Foundations**: We prototyped an experimental Model Context Protocol (`mcp_server.py`) inside the `assistant/backend/` architecture to manage semantic context sharing between local processes, utilizing structured context-handling blocks to isolate local telemetry data.
+
+---
+
+## 📈 Engineering Retrospective: What Worked and What Failed
+
+### 🟢 What Worked (Successful Architectures)
+
+* **The Move to ConvTasNet**: Originally, the pipeline was prototyped using deep Recurrent Neural Network (RNN) blocks. However, sequential recurrence drastically bottlenecked edge CPU memory allocation, causing real-time latency to spike to an unacceptable 12 seconds per stream. Using agentic code refactoring, we successfully pivoted to a fully parallelized 1D Convolutional Time-Domain Separation Matrix (ConvTasNet). This dropped active graph parameters down to 4.95M and achieved true real-time execution (`0.361 xRT`).
+* **Deterministic Micro-Routing Over Semantic LLMs**: We tested a local 1-Billion parameter language model to parse text intent on-device. The inference pass added over 4 seconds of latency per command and frequently hallucinated device actions. Replacing this with a zero-parameter deterministic micro-routing dictionary structure (`Tier1IntentRouter`) eliminated latency and guaranteed zero-hallucination stability.
+* **The 8kHz ↔ 16kHz Acoustic Bridge**: Running neural mask estimation directly on 16kHz audio required an unsustainable convolutional stride footprint. The LLM helped us design a decoupled logic: downsample to 8kHz for parallelized convolutional mask extraction, and then immediately upsample the resulting isolated channel back to 16kHz before hitting the Kaldi ASR engine. This preserved phoneme alignment while honoring hardware bounds.
+
+### 🔴 What Failed (Dropped Approaches)
+
+* **SuDoRM-RF Lite Matrix Integration**: We spent significant engineering time trying to implement an ultra-lightweight SuDoRM-RF acoustic model architecture. While it successfully reduced the parameter footprint, the lack of robust, pre-trained Indian English weight profiles caused massive mask bleeding, resulting in unreadable audio corruptions.
+* **Dynamic PyTorch Level-1 Quantization**: Attempting to force 8-bit dynamic quantization on our convolutional separation matrix broke the backward compatibility of the internal tracking layers, leading to unstable tensor shapes during runtime inference. We abandoned this in favor of explicit graph optimizations and targeted channel downsampling via our Acoustic Bridge.
+* **Untrained Generative Micro-Agents**: We originally designed a multi-agent orchestration setup (`supervisor.py`, `watchdog_critic.py`) using lightweight local LLMs to dynamically audit transcription quality. On edge CPU constraints, the context-handling memory overhead caused systemic buffer overflows in our stream-slicing ring buffers, proving that classic multi-agent text frameworks are too heavy for low-level edge gateway firmware.
