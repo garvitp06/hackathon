@@ -133,7 +133,7 @@ Monitors active graph layer operations.
 **Expected Output:**
 
 ```text
-[PARAM AUDIT] Total Parameters: 5,050,545
+[PARAM AUDIT] Total Parameters: 4,950,321
 ```
 
 **Purpose:**
