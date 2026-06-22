@@ -46,6 +46,7 @@ The hardware environment operates entirely local to the edge gateway, bypassing 
                                                  │
                                                  ▼
                                  [ Local Smart Home Firmware Bus ]
+text```
 🧠 Core Engineering Breakthroughs & Implementation Details
 1. The 8kHz ↔ 16kHz Acoustic Bridge
 Processing acoustic mask-estimation networks at 16kHz sample rates requires a dense convolutional stride matrix, driving active graph parameters well past 10 Million. To honor strict edge resource bounds, AuraSync implements a decoupled sample-rate bridge:
